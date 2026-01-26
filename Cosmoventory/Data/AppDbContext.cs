@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Cosmoventory.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Cosmoventory.Data;
 
@@ -8,4 +9,6 @@ public class AppDbContext: DbContext
     {
 
     }
+
+    public DbSet<User> Users { get; set; }
 }
