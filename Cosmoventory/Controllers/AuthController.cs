@@ -3,6 +3,7 @@ using Cosmoventory.DTO;
 using Cosmoventory.Enums;
 using Cosmoventory.Helpers;
 using Cosmoventory.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
@@ -85,6 +86,13 @@ namespace Cosmoventory.Controllers
                     user.Role
                 }
             });
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin-only")]
+        public IActionResult AdminOnly()
+        {
+            return Ok("Admins only 👑");
         }
     }
 
