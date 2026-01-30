@@ -24,6 +24,7 @@ namespace Cosmoventory.Controllers
             _db = db;
             _jwt = jwt;
         }
+
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterUserRequestDTO request)
         {
@@ -92,8 +93,16 @@ namespace Cosmoventory.Controllers
         [HttpGet("admin-only")]
         public IActionResult AdminOnly()
         {
-            return Ok("Admins only 👑");
+            return Ok("Admins only");
         }
+
+        [Authorize]
+        [HttpGet("secure")]
+        public IActionResult Secure()
+        {
+            return Ok("Swagger + JWT works 🚀");
+        }
+
     }
 
 }
