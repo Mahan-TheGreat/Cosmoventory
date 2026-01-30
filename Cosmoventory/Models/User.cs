@@ -26,7 +26,7 @@ namespace Cosmoventory.Models
         public DateTime? UpdatedAt { get; set; }
         public DateTime? LastLoginAt { get; set; }
 
-        public bool IsLocked { get; set; } = true;
+        public bool IsLocked { get; set; } = false;
 
         // Soft delete 
         public bool IsActive { get; set; } = true;
