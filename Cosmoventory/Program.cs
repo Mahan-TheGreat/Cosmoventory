@@ -20,8 +20,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
 
 
 // -- For Authentication
-var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
+var JwtSettings = builder.Configuration.GetSection("JwtSettings");
+var key = Encoding.UTF8.GetBytes(JwtSettings["Key"]!);
 
 builder.Services.AddAuthentication(options =>
 {
@@ -36,8 +36,8 @@ builder.Services.AddAuthentication(options =>
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings["Issuer"],
-            ValidAudience = jwtSettings["Audience"],
+            ValidIssuer = JwtSettings["Issuer"],
+            ValidAudience = JwtSettings["Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(key)
         };
     });
@@ -55,29 +55,22 @@ builder.Services.AddSwaggerGen(options =>
         Title = "Cosmoventory API",
         Version = "v1"
     });
-    //// 🔐 JWT Authorization support
-    //options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    //{
-    //    Name = "Authorization",
-    //    Type = SecuritySchemeType.Http,
-    //    Scheme = "Bearer",
-    //    BearerFormat = "JWT",
-    //    In = ParameterLocation.Header,
-    //    Description = "Enter: Bearer {your JWT token}"
-    //});
+    // 🔐 JWT Authorization support
+    options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter your JWT token in the text input below.\n\nExample: '12345abcdef'"
+    });
 
-    //options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    //{
-    //    {
-    //        new OpenApiSecurityScheme
-    //        {
-                
-    //            Type:"",
-    //            Scheme:""
-    //        },
-    //        Array.Empty<string>()
-    //    }
-    //});
+    options.AddSecurityRequirement(document => new()
+    {
+        [new OpenApiSecuritySchemeReference("bearer", document)] = []
+    });
+  
+
 });
 
 var app = builder.Build();
@@ -87,10 +80,10 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    app.UseSwaggerUI(options =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        c.RoutePrefix = ""; // Loads Swagger at root URL
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+        options.RoutePrefix = ""; // Loads Swagger at root URL
     });
 }
 
