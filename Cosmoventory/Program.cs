@@ -1,4 +1,5 @@
 ﻿using Cosmoventory.Data;
+using Cosmoventory.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -72,6 +73,8 @@ builder.Services.AddSwaggerGen(options =>
   
 
 });
+
+builder.Services.AddScoped<IJwtTokenService,JwtTokenService>();
 
 var app = builder.Build();
 
