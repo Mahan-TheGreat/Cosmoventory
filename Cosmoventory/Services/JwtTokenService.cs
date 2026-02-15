@@ -1,9 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Cosmoventory.Interface;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-public class JwtTokenService
+public class JwtTokenService:IJwtTokenService
 {
     private readonly IConfiguration _config;
 
